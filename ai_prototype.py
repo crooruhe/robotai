@@ -20,6 +20,7 @@ transcriber = aai.Transcriber()
 
 #transcript = transcriber.transcribe("testassemblyai.wav")
 
+#### boiler plate #####
 tokenizer = AutoTokenizer.from_pretrained(model)
 pipeline = transformers.pipeline(
     "text-generation",
@@ -39,3 +40,4 @@ sequences = pipeline(
 )
 for seq in sequences:
     print(f"Result: {seq['generated_text']}")
+#### end boiler plate #####
