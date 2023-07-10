@@ -4,6 +4,10 @@ import cv2
 # to take a picture: libcamera-jpeg -o test.jpg #will need to use subprocess and save to a face picture directory
 # camera streaming: libcamera-vid -t 0 --codec libav --libav-format mpegts --libav-audio  -o "udp://<ip-addr>:<port>"
 # potential software solution to start detecting faces: https://www.raspberrypi.com/documentation/computers/camera_software.html#libcamera-detect
+
+from picamera2 import Picamera2, Preview
+
+
 import RPi.GPIO as GPIO #will show error on windows machine
 #consider gpiozero
 # from gpiozero import LED
@@ -18,18 +22,33 @@ import RPi.GPIO as GPIO #will show error on windows machine
 #     sleep(1)
 from time import sleep
 
+def camera_snapshot():
+    picam2 = Picamera2()
+    camera_config = picam2.create_preview_configuration()
+    picam2.configure(camera_config)
+    picam2.start_preview(Preview.QTGL) #x windows
+    #picam2.start_preview(Preview.DRM) # ms windows (or other)
+    picam2.start()
+    sleep(2)
+    picam2.capture_file("picamera_test_delete_me.jpg")
+
+def picamera_video_capture():
+    picam2 = Picamera2()
+    picam2.start_and_record_video("test.mp4", duration=5)
+
+
 ###### example
-GPIO.setmode(GPIO.BCM)
+""" GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(18,GPIO.OUT)
 print("LED on")
 GPIO.output(18,GPIO.HIGH)
 sleep(1)
 print("LED off")
-GPIO.output(18,GPIO.LOW)
+GPIO.output(18,GPIO.LOW) """
 #######
 
-face_classifier = cv2.CascadeClassifier(
+""" face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
 
@@ -61,4 +80,6 @@ while True:
         break
 
 video_capture.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows() """
+
+if __name__ == '__main__':
