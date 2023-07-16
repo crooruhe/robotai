@@ -8,6 +8,58 @@ import cv2
 from picamera2 import Picamera2, Preview
 
 
+########################################
+########################################
+#potentially have server or work station do the video/facial recognition processing
+
+# from picamera2.outputs import FileOutput
+# import socket
+# with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+#   sock.connect(("REMOTEIP", 10001))
+#   stream = sock.makefile("wb")
+#   output = FileOutput(stream)
+
+########################################
+########################################
+
+""" TODO:
+sudo apt-get install python-smbus
+sudo apt-get install i2c-tools
+
+
+use this to detect i2c port:
+sudo i2cdetect -y 1
+
+*should show the servo hat
+
+need to ensure compatibility w/ circuit python and this regular python app
+may need to use subprocess to run thread that contains circuit python code:
+
+sudo pip3 install adafruit-circuitpython-servokit
+
+servo board/hat:
+import board
+import busio
+import adafruit_pca9685
+from adafruit_servokit import ServoKit
+
+i2c = busio.I2C(board.SCL, board.SDA)
+hat = adafruit_pca9685.PCA9685(i2c)
+
+documentation for hat: https://circuitpython.readthedocs.io/projects/pca9685/en/latest/api.html
+
+kit = ServoKit(channels=16)
+
+kit.continuous_servo[1].throttle = 1 #full throttle (probably way too fast)
+kit.continuous_servo[1].throttle = 0.5 #half throttle
+kit.continuous_servo[1].throttle = -1 #reverse
+
+#my servo runs at 50 Hz
+
+
+"""
+
+
 import RPi.GPIO as GPIO #will show error on windows machine
 #consider gpiozero
 # from gpiozero import LED
@@ -83,3 +135,4 @@ video_capture.release()
 cv2.destroyAllWindows() """
 
 if __name__ == '__main__':
+    pass
