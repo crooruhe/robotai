@@ -44,17 +44,27 @@ finally:
 #this should do the same thing that chatgpt generated
 #my primary concern was with picam2.start this should start the video stream without recording which
 #was my main concern
+
 import cv2
 import time
+import os
+import face_recognition
+import numpy as np
 
 from picamera2 import Picamera2
-
+from libcamera import controls
 # Grab images as numpy arrays and leave everything else to OpenCV.
 
 face_detector = cv2.CascadeClassifier("/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml")
 cv2.startWindowThread()
 
+#this apparently sets the HDR on w/ images/pictures
+#os.system("v4l2-ctl --set-ctrl wide_dynamic_range=1 -d /dev/v4l-subdev0")
+#this next line turns it off
+#os.system("v4l2-ctl --set-ctrl wide_dynamic_range=0 -d /dev/v4l-subdev0")
+
 picam2 = Picamera2()
+#picam2.set_controls({"AfMode": controls.AfModeEnum.Continuous})
 picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
 picam2.start()
 
@@ -65,6 +75,8 @@ while True:
     faces = face_detector.detectMultiScale(grey, 1.1, 5)
 
     image_file = f"image_{time.strftime('%Y%m%d_%H%M%S')}.jpg"
+    #use faces x,y,w,h to save image of only the face
+
     cv2.imwrite(image_file, im)
 
     for (x, y, w, h) in faces:
