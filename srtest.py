@@ -1,17 +1,17 @@
 import speech_recognition as sr
 
 r = sr.Recognizer()
-#with sr.Microphone(device_index=2) as source:
-#    print("Say something!")
-#    r.adjust_for_ambient_noise(source)
-#    audio = r.listen(source)
-#    print("received")
-with sr.AudioFile('exampleaudio.wav') as source:
-    audio = r.listen(source)
+with sr.Microphone() as source: # device_index=2
+    r.adjust_for_ambient_noise(source, duration=5)
+    print("input>:")
+    audio = r.listen(source, phrase_time_limit=4)
+    #print("received")
+# with sr.AudioFile('exampleaudio.wav') as source:
+#     audio = r.listen(source)
 
 # recognize speech using whisper
 try:
-    print("Whisper thinks you said " + r.recognize_whisper(audio, language="english"))
+    print(">: " + r.recognize_whisper(audio, language="english"))
 except sr.UnknownValueError:
     print("Whisper could not understand audio")
 except sr.RequestError as e:
